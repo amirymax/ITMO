@@ -1,3 +1,3 @@
 # ITMO
 
-All the labortory works and projects from University
+All the laboratory works and projects from University
