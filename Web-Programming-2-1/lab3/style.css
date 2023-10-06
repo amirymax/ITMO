@@ -1,0 +1,48 @@
+
+h2{
+    text-align: center;
+    font: bold 40px "sans-serif";
+}
+ul{
+    text-align: center;
+}
+
+body{
+    background: cyan;
+}
+
+button{
+    color: coral;
+    padding: 3%;
+    margin: 2%;
+    background-color: aquamarine;
+    border-radius: 20px;
+    border: 2px solid;
+}
+button:disabled{
+    opacity: 40%;
+}
+input{
+    max-width: 70px;
+    color: coral;
+    background-color: aquamarine;
+    border-radius: 10px;
+    border: 1px solid coral;
+}
+input:disabled{
+    opacity: 50%;
+}
+table{
+    margin-left: 20%;
+    margin-right: 30%;
+    text-align: center;
+}
+table,td{
+    background-color: aquamarine;
+    border-collapse: collapse;
+    text-align: center;
+    font: 30px "sans-serif";
+    border: 1px solid black;
+    padding: 5px;
+
+}
