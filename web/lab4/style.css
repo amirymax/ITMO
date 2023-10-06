@@ -1,0 +1,51 @@
+*, body {
+    background-color: yellow;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+table {
+    margin: 70px 70px 20px;
+
+}
+h1 {
+    font-size: 40px;
+}
+thead {
+    margin-bottom: 20px;
+}
+.table{
+    border: 2px solid black;
+    border-radius: 10px;
+
+}
+.table, td, th {
+
+    padding: 20px;
+    background-color: yellowgreen;
+}
+th{
+    text-decoration: underline;
+}
+
+td {
+    text-align: left;
+    padding: 10px 20px;
+
+}
+a{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    opacity: 80%;
+}
+a:hover{
+    opacity: 100%;
+}
+a#add{
+    margin-left: 750px;
+    padding: 7px 30px;
+}
