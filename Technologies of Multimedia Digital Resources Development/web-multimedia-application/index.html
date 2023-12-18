@@ -1,0 +1,58 @@
+<!-- Обновленный HTML с добавленными классами для анимации -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея изображений</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="theme-toggle">
+        <input type="checkbox" id="theme-switch" onclick="toggleTheme()">
+        <label for="theme-switch" class="toggle-label"></label>
+    </div>
+    
+
+    <div id="gallery-container">
+        <div id="controls">
+            <button onclick="prevImage()">Предыдущее</button>
+            <button onclick="nextImage()">Следующее</button>
+            <button onclick="toggleAuto()">Авто</button>
+            <label for="timing">Время переключения (сек): </label>
+            <input type="number" id="timing" min="1" value="5">
+            <button onclick="setTiming()">Применить</button>
+        </div>
+        <div id="gallery">
+            <div class="slide">
+                <img src="./img/bmw8.jpg" alt="BMW M8" class="gallery-image">
+                <p class="image-text">BMW M8 BLUE</p>
+            </div>
+            <div class="slide">
+                <img src="./img/bmw8_2.jpg" alt="BMW M8" class="gallery-image">
+                <p class="image-text">WHITE BMW M8</p>
+            </div>
+            <div class="slide">
+                <img src="./img/bmw8_2019.jpg" alt="BMW M8" class="gallery-image">
+                <p class="image-text">GRAY BMW M8 2019</p>
+            </div>
+        </div>
+        <div id="audio-controls">
+            <label for="audio">Выбрать звук: </label>
+            <select id="audio">
+                <option value="./audios/lofi.mp3">Lofi</option>
+                <option value="./audios/interstellar.mp3">Interstellar</option>
+                <option value="./audios/interstellar_piano.mp3">Interstellar Pia</option>
+            </select>
+            <button onclick="toggleSound()">Вкл/Выкл звук</button>
+        </div>
+    </div>
+    <audio id="audio-player" autoplay loop>
+        <source src="./audios/lofi.mp3" type="audio/mp3">
+        <source src="./audios/interstellar.mp3" type="audio/mp3">
+        <source src="./audios/interstellar_piano.mp3" type="audio/mp3">
+    </audio>
+    <div id="audio-visualization"></div>
+    <script src="script.js"></script>
+</body>
+</html>
