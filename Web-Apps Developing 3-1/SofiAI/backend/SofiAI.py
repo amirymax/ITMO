@@ -3,6 +3,7 @@ import sys
 import sounddevice as sd
 import queue
 import json
+import config
 
 
 class Sofi:
@@ -47,7 +48,7 @@ class Sofi:
                         if cmd['cmd'] not in config.VA_CMD_LIST.keys():
                             tts.va_speak("Что?")
                         else:
-                            execute_cmd(cmd['cmd'])
+                            self.execute(cmd['cmd'])
 
     def execute(self) -> None:
         pass
