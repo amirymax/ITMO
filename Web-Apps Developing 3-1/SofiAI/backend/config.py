@@ -1,6 +1,6 @@
 VA_NAME = 'Sofi'
 
-VA_ALIAS = ('sofi', 'sofia', 'sofa', 'safia', 'sofya')
+VA_ALIAS = ('sofi', 'sofia', 'sofa', 'safia', 'sofya', 'sophie', 'so fi')
 
 VA_TBR = ('say', 'show', 'tell', 'what')
 

@@ -4,14 +4,26 @@ import sounddevice as sd
 import queue
 import json
 import config
+from fuzzywuzzy import fuzz
+import torch
+import time
 
 
 class Sofi:
     def __init__(self) -> None:
-        self.text: str = ''
-        self.vosk_model = vosk.Model("model_small")
+
+        self.torch_model, _ = torch.hub.load(repo_or_dir='snakers4/silero-models',
+                                             model='silero_tts',
+                                             language='en',
+                                             speaker='v3_en')
+        self.torch_model.to(torch.device('cpu'))
+
+        self.vosk_model = vosk.Model(
+            "C:\\Users\\Sofia\\Desktop\\ITMO\\Web-Apps Developing 3-1\\SofiAI\\backend\\model-small")
 
     def listen(self) -> None:
+        self.say('I am listening to you sir. What did you want?')
+        print('Listening')
         q = queue.Queue()
         samplerate = 16000
         device = 1
@@ -33,6 +45,16 @@ class Sofi:
 
             return rc
 
+        def filter_cmd(raw_voice: str):
+            cmd = raw_voice
+
+            for x in config.VA_ALIAS:
+                cmd = cmd.replace(x, "").strip()
+
+            for x in config.VA_TBR:
+                cmd = cmd.replace(x, "").strip()
+            print(f'CMD: {cmd}')
+            return cmd
         with sd.RawInputStream(samplerate=samplerate, blocksize=8000, device=device, dtype='int16',
                                channels=1, callback=q_callback):
 
@@ -41,16 +63,29 @@ class Sofi:
                 data = q.get()
                 if rec.AcceptWaveform(data):
                     voice = json.loads(rec.Result())["text"]
+                    print(f'Voice: {voice}')
                     if voice.startswith(config.VA_ALIAS):
                         # обращаются к ассистенту
                         cmd = recognize_cmd(filter_cmd(voice))
-
+                        print(cmd)
                         if cmd['cmd'] not in config.VA_CMD_LIST.keys():
-                            tts.va_speak("Что?")
+                            self.say("What?")
                         else:
                             self.execute(cmd['cmd'])
 
-    def execute(self) -> None:
+    def say(self, what: str):
+        sample_rate = 48000
+        audio = self.torch_model.apply_tts(text=what+"..",
+                                           speaker="en_5",
+                                           sample_rate=sample_rate,
+                                           put_accent=True,
+                                           put_yo=True)
+
+        sd.play(audio, sample_rate * 1.05)
+        time.sleep((len(audio) / sample_rate) + 0.5)
+        sd.stop()
+
+    def execute(self, cmd: str) -> None:
         pass
 
     def open(self, program_name) -> None:
@@ -70,3 +105,6 @@ class Sofi:
 
     def talk(self) -> None:
         pass
+
+
+Sofi()
