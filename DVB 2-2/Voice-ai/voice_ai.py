@@ -15,7 +15,7 @@ for voice in voices:
     print(voice.name)
     if voice.name == 'Microsoft Zira Desktop - English (United States)':
         tts.setProperty('voice', voice.id)
-model = vosk.Model('vosk-model-small-en-us-0.15')
+model = vosk.Model('C:\\Users\\Sofia\\Desktop\\ITMO\\DVB 2-2\\Voice-ai\\vosk-model-small-en-us-0.15')
 record = vosk.KaldiRecognizer(model, 16000)
 pa = pyaudio.PyAudio()
 stream = pa.open(format=pyaudio.paInt16,

@@ -7,6 +7,8 @@ import config
 from fuzzywuzzy import fuzz
 import torch
 import time
+import os
+from random import choice
 
 
 class Sofi:
@@ -20,10 +22,10 @@ class Sofi:
 
         self.vosk_model = vosk.Model(
             "C:\\Users\\Sofia\\Desktop\\ITMO\\Web-Apps Developing 3-1\\SofiAI\\backend\\model-small")
+        self.log = open('log.txt', 'a')
 
     def listen(self) -> None:
         self.say('I am listening to you sir. What did you want?')
-        print('Listening')
         q = queue.Queue()
         samplerate = 16000
         device = 1
@@ -54,6 +56,7 @@ class Sofi:
             for x in config.VA_TBR:
                 cmd = cmd.replace(x, "").strip()
             print(f'CMD: {cmd}')
+            self.log.write(cmd + ' : ')
             return cmd
         with sd.RawInputStream(samplerate=samplerate, blocksize=8000, device=device, dtype='int16',
                                channels=1, callback=q_callback):
@@ -68,6 +71,7 @@ class Sofi:
                         # обращаются к ассистенту
                         cmd = recognize_cmd(filter_cmd(voice))
                         print(cmd)
+                        self.log.write(cmd['cmd'] + '\n')
                         if cmd['cmd'] not in config.VA_CMD_LIST.keys():
                             self.say("What?")
                         else:
@@ -86,7 +90,79 @@ class Sofi:
         sd.stop()
 
     def execute(self, cmd: str) -> None:
-        pass
+        if cmd == 'help':
+            # help
+            text = 'I can: ...'
+            text += 'tell the time...'
+            text += 'tell a joke...'
+            text += 'open notepad...'
+            text += 'and open browser'
+            self.say(text)
+
+        elif cmd == 'thanks':
+            # thanks
+            text = 'You are welcome, Sir.'
+            text += 'I am always glad to help you'
+            self.say(text)
+
+        elif cmd == 'ctime':
+            # time
+            from datetime import datetime
+            import num2word
+            now = datetime.now()
+            text = f"It's {num2word.word(now.hour)} {num2word.word(now.minute)} now."
+            self.say(text)
+
+        elif cmd == 'joke':
+            from random import choice
+            jokes = ['There are ten kinds of people in the world. Those who understand binary and those who don’t.',
+                     'How do progammers laugh? ... exe exeexe',
+                     'Knock, knock. Who’s There? Very long pause… “Java.”',
+                     'Programming is 10% writing code and nineteen percent understanding why it’s not working']
+
+            self.say(choice(jokes))
+
+        elif cmd == 'chrome':
+
+            self.say('Processing sir...')
+            terminal_output = os.system('start chrome')
+
+            if not terminal_output:
+                self.say('Chrome opened successfully')
+            else:
+                self.say(
+                    'Chrome browser is not found on your computer. Try another brower.')
+
+        elif cmd == 'edge':
+            self.say('Processing sir...')
+            terminal_output = os.system('start msedge')
+
+            if not terminal_output:
+                self.say('Edge opened successfully')
+            else:
+                self.say(
+                    'Edge browser is not found on your computer. Try another brower.')
+
+        elif cmd=='note':
+            self.say('Pocessing sir...')
+            terminal_output = os.system('start notepad')
+            if not terminal_output:
+                self.say('Here is Notepad!')
+            else:
+                self.say('There was an error while processing. Please try again!')
+        
+        elif cmd=='log':
+            self.say('Processing sir...')
+            self.log.close()
+            terminal_output = os.system('start log.txt')
+            if not terminal_output:
+                self.say("Command's log opened successfully")
+                self.log = open('log.txt','a')
+            else:
+                self.say('There was an error while processing. Please try again!')
+        
+            
+
 
     def open(self, program_name) -> None:
         pass
@@ -106,5 +182,3 @@ class Sofi:
     def talk(self) -> None:
         pass
 
-
-Sofi()
