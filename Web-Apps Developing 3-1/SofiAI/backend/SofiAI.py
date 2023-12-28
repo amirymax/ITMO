@@ -9,6 +9,10 @@ import torch
 import time
 import os
 from random import choice
+import num2word
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
 class Sofi:
@@ -143,32 +147,111 @@ class Sofi:
                 self.say(
                     'Edge browser is not found on your computer. Try another brower.')
 
-        elif cmd=='note':
+        elif cmd == 'note':
             self.say('Pocessing sir...')
             terminal_output = os.system('start notepad')
             if not terminal_output:
                 self.say('Here is Notepad!')
             else:
                 self.say('There was an error while processing. Please try again!')
-        
-        elif cmd=='log':
+
+        elif cmd == 'log':
             self.say('Processing sir...')
             self.log.close()
             terminal_output = os.system('start log.txt')
             if not terminal_output:
                 self.say("Command's log opened successfully")
-                self.log = open('log.txt','a')
+                self.log = open('log.txt', 'a')
             else:
                 self.say('There was an error while processing. Please try again!')
-        
-            
 
+        elif cmd == 'word':
+            self.say('Processing sir...')
+            terminal_output = os.system('start winword')
+            if not terminal_output:
+                self.say('Microsoft Word opened successfully.')
+            else:
+                self.say(
+                    'The program wasn\'t found in your computer. Try to use online version.')
+
+        elif cmd == 'excel':
+            self.say('Processing sir...')
+            terminal_output = os.system('start excel')
+            if not terminal_output:
+                self.say('Microsoft Excel opened successfully.')
+            else:
+                self.say(
+                    'The program wasn\'t found in your computer. Try to use online version.')
+
+        elif cmd == 'increase volume':
+            self.increase_volume()
+
+        elif cmd == 'decrease volume':
+            self.decrease_volume()
+
+        elif cmd == 'middle volume':
+            self.middle_volume()
+        
+        elif cmd == 'max volume':
+            self.max_volume()
+        
+        elif cmd == 'mute volume':
+            self.mute_volume()
 
     def open(self, program_name) -> None:
         pass
 
-    def volume(self, degree) -> None:
-        pass
+    def increase_volume(self) -> None:
+        self.set_volume('+')
+
+    def decrease_volume(self) -> None:
+        self.set_volume('-')
+
+    def middle_volume(self) -> None:
+        self.set_volume('=')
+
+    def max_volume(self) -> None:
+        self.set_volume('max')
+
+    def mute_volume(self) -> None:
+        self.set_volume('mute')
+
+    def set_volume(self, degree: str) -> None:
+        current_volume = self.get_volume()
+        if degree == '+':
+            if current_volume == 1:
+                self.say('Volume is already at it\'s highest sir.')
+                return
+            else:
+                current_volume += 0.1
+                current_volume = min(current_volume, 1)
+        elif degree == '-':
+            if current_volume == 0:               
+                return
+            else:
+                current_volume -= 0.1
+                current_volume = max(current_volume, 0)
+        elif degree == '=':
+            current_volume = 0.5
+        elif degree == 'max':
+            current_volume = 1.0
+        elif degree == 'mute':
+            current_volume = 0
+        volume_control = self.get_volume_control()
+        volume_control.SetMasterVolumeLevelScalar(current_volume, None)
+        text = f'Volume set to {num2word.word(int(current_volume * 100))} percent.'
+        self.say(text)
+
+    def get_volume(self):
+        volume_control = self.get_volume_control()
+        return volume_control.GetMasterVolumeLevelScalar()
+
+    def get_volume_control(self):
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume_control = cast(interface, POINTER(IAudioEndpointVolume))
+        return volume_control
 
     def google(self, request) -> None:
         pass
@@ -181,4 +264,3 @@ class Sofi:
 
     def talk(self) -> None:
         pass
-

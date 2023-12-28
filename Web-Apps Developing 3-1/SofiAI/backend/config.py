@@ -20,9 +20,20 @@ VA_CMD_LIST = {
     "edge": ('open edge', 'edge browser', 'start edge'),
 
     # notepad
-    'note': ('make a note','start notepad'),
+    'note': ('make a note', 'start notepad'),
 
     # log
-    'log':('open log', 'show the log', 'log of commands', "command's log")
+    'log': ('open log', 'show the log', 'log of commands', "command's log"),
+
+    # Microsoft
+    'word': ('open word', 'open MS word', 'start Microsoft word', 'start word'),
+    'excel': ('open excel', 'start excel', 'open Microsoft excel'),
+
+    # Volume
+    'increase volume': ('increase volume', 'volume up', 'put volume', 'add volume'),
+    'decrease volume': ('decrease volume', 'volume down', 'minus volume'),
+    'middle volume': ('set volume to the middle','middle volume'),
+    'max volume':('set volume to the max', 'max volume', 'volume to hunread percent'),
+    'mute volume':('mute volume', 'mute','volume to the zero')
 
 }
