@@ -1,0 +1,22 @@
+{
+  "name": "ronaldo",
+  "version": "1.0.0",
+  "description": "Лабораторная работа по Веб-технологиям",
+  "main": "index.html",
+  "private": true,
+  "scripts": {
+    "lint:js": "eslint **/*.js",
+    "lint:css": "stylelint **/*.css",
+    "lint:html": "prettier --write **/*.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "htmlhint": "^1.1.4",
+    "prettier": "3.2.5",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
+    "eslint-config-standard": "^17.1.0"
+  }
+}
